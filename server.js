@@ -12,7 +12,7 @@ let PARTIDAS = [
         timeA: "Falcões",
         timeB: "Dragões",
         pontoA: 3,
-        pontosB: 2,
+        pontoB: 2,
         status: "Finalizada",
     },
     {
@@ -21,7 +21,7 @@ let PARTIDAS = [
         timeA: "Lobos",
         timeB: "Falcões",
         pontoA: 0,
-        pontosB: 0,
+        pontoB: 0,
         status: "Agendada",
     },
 
@@ -45,25 +45,25 @@ app.get("/partidas/:id", (req, res) => {
     res.status(200).json(partida);
 });
 
-app.post("/partidas",(req, res)=>{
-    const {jogo, temeA, temB} = req.body;
+app.post("/partidas", (req, res) => {
+    const { jogo, temeA, temB } = req.body;
 
-    if(!jogo || !timeA || !timeB){
+    if (!jogo || !timeA || !timeB) {
         return res.status(400).json({
             mensagem: "Informe jogo, timeA e timeB"
         });
     }
 
-    if(timeA.trim().toLowerCase() === timeB.trim().toLowerCase()){
-         return res.status(400).json({
+    if (timeA.trim().toLowerCase() === timeB.trim().toLowerCase()) {
+        return res.status(400).json({
             mensagem: "OS time devem ser diferentes"
         });
     }
 
     const novoId = PARTIDAS.length > 0
-        ?Math.max(...PARTIDAS.map(p => p.id)) +1 :1;
+        ? Math.max(...PARTIDAS.map(p => p.id)) + 1 : 1;
 
-    const novaPartida ={
+    const novaPartida = {
         id: novoId,
         jogo: jogo.trim(),
         timeA: timeA.trim(),
@@ -81,21 +81,21 @@ app.post("/partidas",(req, res)=>{
 
 });
 
-app.put("/partidas/:id", (req, res)=>{
+app.put("/partidas/:id", (req, res) => {
     const id = Number(req.params.id);
     const indice = PARTIDAS.findIndex(p => p.id === id);
 
-    if(indice === -1){
-        return res.status(404).json({mensagem: "Partida não encontrada"})
+    if (indice === -1) {
+        return res.status(404).json({ mensagem: "Partida não encontrada" })
     }
-    const{jogo, timeA, timeB, pontoA, pontoB, status} = req.body;
+    const { jogo, timeA, timeB, pontoA, pontoB, status } = req.body;
 
-    if(!jogo || !timeA || timeB 
+    if (!jogo || !timeA || !timeB
         || !Number.isInteger(pontoA)
-        || Number.isInteger(pontoB)
-        || pontoA < 0 || pontoB <0
+        || !Number.isInteger(pontoB)
+        || pontoA < 0 || pontoB < 0
         || !["agendada", "finalizada"].includes(status)
-    ){
+    ) {
         return res.status(400).json({
             mensagem: "Envie jogo, times, placares válidos"
 
@@ -108,7 +108,7 @@ app.put("/partidas/:id", (req, res)=>{
         timeA,
         timeB,
         pontoA,
-        pontosB,
+        pontoB,
         status,
     };
 
