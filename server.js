@@ -94,10 +94,28 @@ app.put("/partidas/:id", (req, res)=>{
         || !Number.isInteger(pontoA)
         || Number.isInteger(pontoB)
         || pontoA < 0 || pontoB <0
-        || ["agendada", "finalizada"].includes(status)
+        || !["agendada", "finalizada"].includes(status)
     ){
-        
+        return res.status(400).json({
+            mensagem: "Envie jogo, times, placares válidos"
+
+        });
     }
+
+    PARTIDAS[indice] = {
+        id,
+        jogo,
+        timeA,
+        timeB,
+        pontoA,
+        pontosB,
+        status,
+    };
+
+    res.status(200).json({
+        mensagem: "Partida atualizada",
+        partida: PARTIDAS[indice]
+    })
 })
 
 const PORT = 3000;
